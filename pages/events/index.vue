@@ -35,16 +35,7 @@
           </b-card>
         </div>
 
-        <div
-          v-else
-          class="text-center"
-        >
-          <font-awesome-icon
-            icon="spinner"
-            pulse
-            size="3x"
-          />
-        </div>
+        <loading-icon v-else />
       </b-col>
     </b-row>
   </b-container>
@@ -52,8 +43,13 @@
 
 <script>
 import axios from 'axios'
+import LoadingIcon from '~/components/LoadingIcon.vue'
 
 export default {
+  components: {
+    LoadingIcon
+  },
+
   data () {
     return {
       events: [],

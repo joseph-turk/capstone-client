@@ -2,32 +2,63 @@
   <b-container>
     <b-row class="py-4">
       <b-col>
-        <h1 class="mb-4">{{ event.name }}</h1>
+        <div v-if="loading === false">
+          <h1 class="mb-4">{{ event.name }}</h1>
 
-        <p>{{ event.description }}</p>
+          <p>{{ event.description }}</p>
 
-        <ul>
-          <li><strong>Date:</strong> {{ eventDate }}</li>
-          <li><strong>Start:</strong> {{ eventStart }}</li>
-          <li><strong>End:</strong> {{ eventEnd }}</li>
-        </ul>
+          <ul>
+            <li><strong>Date:</strong> {{ eventDate }}</li>
+            <li><strong>Start:</strong> {{ eventStart }}</li>
+            <li><strong>End:</strong> {{ eventEnd }}</li>
+            <li>
+              <strong>Registrations:</strong> {{ event.registrations.length }}
+              <ul>
+                <li
+                  v-for="registration in event.registrations"
+                  :key="registration.id"
+                >
+                  {{ registration.registrant.name }}
+                </li>
+              </ul>
+            </li>
+          </ul>
 
-        <div class="mt-5">
-          <b-btn
-            :to="`/events/${event.id}/edit`"
-            exact
-            variant="primary"
-          >
-            Edit
-          </b-btn>
+          <div class="mt-5">
+            <b-btn
+              v-b-modal.registerModal
+              variant="primary"
+            >
+              Register
+            </b-btn>
 
-          <b-btn
-            exact
-            to="/events"
-            variant="secondary"
-          >
-            Back to All Events
-          </b-btn>
+            <b-btn
+              :to="`/events/${event.id}/edit`"
+              exact
+              variant="secondary"
+            >
+              Edit
+            </b-btn>
+
+            <b-btn
+              exact
+              to="/events"
+              variant="secondary"
+            >
+              Back to All Events
+            </b-btn>
+          </div>
+        </div>
+
+        <div
+          v-else
+          class="text-center"
+        >
+          <font-awesome-icon
+            icon="spinner"
+            pulse
+            size="3x"
+          />
         </div>
       </b-col>
     </b-row>
@@ -41,14 +72,24 @@
     >
       <p class="my-2">This will permanently delete this event.</p>
     </b-modal>
+
+    <register-modal
+      :event="event"
+      @registered="fetchEvent(false)"
+    />
   </b-container>
 </template>
 
 <script>
 import axios from 'axios'
 import moment from 'moment'
+import RegisterModal from '~/components/registrations/RegisterModal.vue'
 
 export default {
+  components: {
+    RegisterModal
+  },
+
   data () {
     return {
       event: {
@@ -58,7 +99,7 @@ export default {
         start: null,
         end: null
       },
-      showModal: false
+      loading: true
     }
   },
 
@@ -77,16 +118,18 @@ export default {
   },
 
   created () {
-    this.fetchEvent()
+    this.fetchEvent(true)
   },
 
   methods: {
-    async fetchEvent () {
+    async fetchEvent (setLoading) {
+      if (setLoading) this.loading = true
       const eventId = this.$route.params.id
       const event = await axios.get(
         `https://localhost:5001/api/events/${eventId}`
       )
       this.event = event.data
+      if (setLoading) this.loading = false
     },
 
     deleteEvent () {
