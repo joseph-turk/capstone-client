@@ -41,13 +41,10 @@
               Edit
             </b-btn>
 
-            <b-btn
-              exact
+            <back-button
               to="/events"
-              variant="secondary"
-            >
-              Back to All Events
-            </b-btn>
+              text="Back to All Events"
+            />
           </div>
         </div>
 
@@ -85,10 +82,12 @@
 import axios from 'axios'
 import moment from 'moment'
 import RegisterModal from '~/components/registrations/RegisterModal.vue'
+import BackButton from '~/components/BackButton.vue'
 
 export default {
   components: {
-    RegisterModal
+    RegisterModal,
+    BackButton
   },
 
   data () {

@@ -3,7 +3,7 @@
     <b-row class="py-4">
       <b-col>
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h1 class="mb-0">Events {{ today }}</h1>
+          <h1 class="mb-0">Events</h1>
 
           <div>
             <b-form-radio-group
@@ -20,12 +20,66 @@
             >
               <font-awesome-icon
                 icon="plus"
-                class="mr-2"
+                class="mr-1"
               />
               Create New Event
             </b-button>
+
+            <b-btn
+              v-b-toggle.moreFilters
+              ref="moreFiltersButton"
+              variant="secondary"
+              @click="toggleFilters"
+            >
+              <font-awesome-icon
+                :icon="showFilters === true ? 'caret-up' : 'caret-down'"
+              />
+            </b-btn>
           </div>
         </div>
+
+        <b-collapse
+          id="moreFilters"
+        >
+          <b-card
+            bg-variant="dark"
+            text-variant="light"
+          >
+            <b-form
+              inline
+              @submit.prevent="searchForEvents"
+            >
+              <b-form-input
+                v-model="searchString"
+                type="text"
+                placeholder="Search Events"
+                aria-label="Search Events"
+                class="mr-2"
+              />
+              <b-btn
+                variant="primary"
+                class="mr-2"
+                @click="searchForEvents"
+              >
+                <font-awesome-icon
+                  icon="search"
+                  class="mr-1"
+                />
+                Search
+              </b-btn>
+              <b-btn
+                variant="secondary"
+                @click="resetSearch"
+              >
+                <font-awesome-icon
+                  icon="times"
+                  class="mr-1"
+                />
+                Reset
+              </b-btn>
+            </b-form>
+          </b-card>
+        </b-collapse>
 
         <div v-if="loading === false">
           <event-preview
@@ -56,23 +110,24 @@ export default {
   data () {
     return {
       events: [],
+      searchedEvents: null,
       loading: false,
-      selectedFilter: 'allEvents',
+      selectedFilter: 'upcomingEvents',
       eventFilters: [
-        { text: 'All', value: 'allEvents' },
         { text: 'Upcoming', value: 'upcomingEvents' },
-        { text: 'Past', value: 'pastEvents' }
-      ]
+        { text: 'Past', value: 'pastEvents' },
+        { text: 'All', value: 'allEvents' }
+      ],
+      searchString: '',
+      showFilters: false
     }
   },
 
   computed: {
-    today () {
-      return moment.utc().format() // this.sortedEvents && moment.utc(this.sortedEvents[0].start).format()
-    },
-
     sortedEvents () {
-      let sortedEventsArray = this.selectedEvents
+      let sortedEventsArray = this.searchedEvents
+        ? this.searchedEvents
+        : this.selectedEvents
       return sortedEventsArray.sort((a, b) => {
         return new Date(a.start) - new Date(b.start)
       })
@@ -84,9 +139,11 @@ export default {
         case 'allEvents':
           return selectedEventsArray
         case 'upcomingEvents':
-          return selectedEventsArray.filter(e => moment.utc(e.start).format() > moment.utc().format())
+          return selectedEventsArray
+            .filter(e => moment.utc(e.start).format() > moment.utc().format())
         case 'pastEvents':
-          return selectedEventsArray.filter(e => moment.utc(e.start).format() < moment.utc().format())
+          return selectedEventsArray
+            .filter(e => moment.utc(e.start).format() < moment.utc().format())
         default:
           return selectedEventsArray
       }
@@ -103,6 +160,29 @@ export default {
       const events = await axios.get('https://localhost:5001/api/events')
       this.events = events.data
       this.loading = false
+    },
+
+    toggleFilters () {
+      this.showFilters = !this.showFilters
+      this.$refs.moreFiltersButton.blur()
+    },
+
+    searchForEvents () {
+      this.searchedEvents = this.searchString.length > 0
+        ? this.selectedEvents.filter(e => {
+          const eventName = e.name.toLowerCase()
+          const eventDescription = e.description.toLowerCase()
+          const searchTerm = this.searchString.toLowerCase()
+
+          return eventName.includes(searchTerm) ||
+            eventDescription.includes(searchTerm)
+        })
+        : null
+    },
+
+    resetSearch () {
+      this.searchString = ''
+      this.searchedEvents = null
     }
   }
 }
