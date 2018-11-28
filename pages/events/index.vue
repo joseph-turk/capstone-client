@@ -2,37 +2,37 @@
   <b-container>
     <b-row class="py-4">
       <b-col>
-        <div class="d-flex justify-content-between align-items-end mb-4">
-          <h1 class="mb-0">All Events</h1>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h1 class="mb-0">Events {{ today }}</h1>
 
-          <b-button
-            to="/events/create"
-            variant="secondary"
-          >
-            <font-awesome-icon
-              icon="plus"
-              class="mr-2"
+          <div>
+            <b-form-radio-group
+              id="filterButtons"
+              v-model="selectedFilter"
+              :options="eventFilters"
+              buttons
+              button-variant="secondary"
             />
-            Create New Event
-          </b-button>
+
+            <b-button
+              to="/events/create"
+              variant="primary"
+            >
+              <font-awesome-icon
+                icon="plus"
+                class="mr-2"
+              />
+              Create New Event
+            </b-button>
+          </div>
         </div>
 
         <div v-if="loading === false">
-          <b-card
-            v-for="event in events"
+          <event-preview
+            v-for="event in sortedEvents"
             :key="event.id"
-            :title="event.name"
-            class="my-3"
-          >
-            <p class="card-text">{{ event.description }}</p>
-
-            <b-button
-              :to="`/events/${event.id}`"
-              variant="primary"
-            >
-              View Event
-            </b-button>
-          </b-card>
+            :event="event"
+          />
         </div>
 
         <loading-icon v-else />
@@ -43,17 +43,53 @@
 
 <script>
 import axios from 'axios'
+import moment from 'moment'
+import EventPreview from '~/components/events/EventPreview.vue'
 import LoadingIcon from '~/components/LoadingIcon.vue'
 
 export default {
   components: {
+    EventPreview,
     LoadingIcon
   },
 
   data () {
     return {
       events: [],
-      loading: false
+      loading: false,
+      selectedFilter: 'allEvents',
+      eventFilters: [
+        { text: 'All', value: 'allEvents' },
+        { text: 'Upcoming', value: 'upcomingEvents' },
+        { text: 'Past', value: 'pastEvents' }
+      ]
+    }
+  },
+
+  computed: {
+    today () {
+      return moment.utc().format() // this.sortedEvents && moment.utc(this.sortedEvents[0].start).format()
+    },
+
+    sortedEvents () {
+      let sortedEventsArray = this.selectedEvents
+      return sortedEventsArray.sort((a, b) => {
+        return new Date(a.start) - new Date(b.start)
+      })
+    },
+
+    selectedEvents () {
+      let selectedEventsArray = this.events
+      switch (this.selectedFilter) {
+        case 'allEvents':
+          return selectedEventsArray
+        case 'upcomingEvents':
+          return selectedEventsArray.filter(e => moment.utc(e.start).format() > moment.utc().format())
+        case 'pastEvents':
+          return selectedEventsArray.filter(e => moment.utc(e.start).format() < moment.utc().format())
+        default:
+          return selectedEventsArray
+      }
     }
   },
 

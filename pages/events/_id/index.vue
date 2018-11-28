@@ -11,6 +11,7 @@
             <li><strong>Date:</strong> {{ eventDate }}</li>
             <li><strong>Start:</strong> {{ eventStart }}</li>
             <li><strong>End:</strong> {{ eventEnd }}</li>
+            <li><strong>Capacity:</strong> {{ event.capacity }}</li>
             <li>
               <strong>Registrations:</strong> {{ event.registrations.length }}
               <ul>
@@ -97,7 +98,8 @@ export default {
         name: '',
         description: '',
         start: null,
-        end: null
+        end: null,
+        capacity: null
       },
       loading: true
     }

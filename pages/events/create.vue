@@ -62,6 +62,17 @@
             />
           </b-form-group>
 
+          <b-form-group
+            label="Capacity"
+            label-for="eventCapacity"
+          >
+            <b-form-input
+              id="eventCapacity"
+              v-model="capacity"
+              type="number"
+            />
+          </b-form-group>
+
           <div class="mt-5">
             <b-button
               type="submit"
@@ -95,7 +106,8 @@ export default {
       description: '',
       date: null,
       startTime: null,
-      endTime: null
+      endTime: null,
+      capacity: null
     }
   },
 
@@ -116,7 +128,8 @@ export default {
           name: this.name,
           description: this.description,
           start: this.eventStart,
-          end: this.eventEnd
+          end: this.eventEnd,
+          capacity: this.capacity
         })
         .then(() => { this.$router.push('/events') })
     }
