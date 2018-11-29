@@ -30,8 +30,6 @@
             </h4>
             <h5 class="subtitle">{{ eventStart }}</h5>
           </div>
-
-          <p class="card-text">{{ event.description }}</p>
         </div>
       </div>
     </b-card>

@@ -24,12 +24,19 @@ module.exports = {
   /*
   ** Global CSS
   */
-  css: ['~/css/main.css'],
+  css: [
+    'quill/dist/quill.core.css',
+    'quill/dist/quill.snow.css',
+    '~/css/main.css'
+  ],
 
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: ['~/plugins/font-awesome'],
+  plugins: [
+    '~/plugins/font-awesome',
+    { src: '~/plugins/quill.js', ssr: false }
+  ],
 
   /*
   ** Nuxt.js modules

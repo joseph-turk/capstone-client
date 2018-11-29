@@ -7,3 +7,20 @@
 .page-leave-active {
   opacity: 0;
 }
+
+/* Quill */
+.ql-editor p:not(:last-child),
+.ql-editor ol:not(:last-child),
+.ql-editor ul:not(:last-child) {
+  margin-bottom: 0.5em !important;
+}
+
+.ql-toolbar {
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+
+.ql-container {
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}

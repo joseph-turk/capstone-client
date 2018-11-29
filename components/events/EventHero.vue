@@ -16,7 +16,8 @@
         'position': 'absolute',
         'bottom': '0',
         'width': '100%',
-        'background': 'linear-gradient(0deg, #343a40 0%, rgba(255,255,255,0) 100%)'
+        'background': 'linear-gradient(0deg, #343a40 0%, rgba(0,0,0,0) 100%)',
+        'padding-top': '2rem'
       }"
     >
       <b-container>

@@ -21,12 +21,7 @@
             label="Event Description"
             label-for="eventDescription"
           >
-            <b-form-textarea
-              id="eventDescription"
-              v-model="description"
-              :rows="3"
-              required
-            />
+            <text-editor v-model="description" />
           </b-form-group>
 
           <b-form-group
@@ -81,6 +76,7 @@
               id="eventImage"
               v-model="image"
               placeholder="Choose an image..."
+              accept="image/*"
             />
           </b-form-group>
 
@@ -115,9 +111,14 @@
 
 <script>
 import axios from 'axios'
+import TextEditor from '~/components/TextEditor.vue'
 
 export default {
   middleware: 'authenticated',
+
+  components: {
+    TextEditor
+  },
 
   data () {
     return {

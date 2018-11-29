@@ -11,19 +11,11 @@
         v-if="loading === false"
         class="py-4"
       >
-        <b-col cols="12">
-          <div class="mb-4">
-            <b-btn
-              v-b-modal.registerModal
-              variant="primary"
-            >
-              <font-awesome-icon
-                icon="check"
-                class="mr-1"
-              />
-              Register
-            </b-btn>
-
+        <b-col
+          cols="12"
+          class="mb-5"
+        >
+          <div class="text-right">
             <b-btn
               :to="`/events/${event.id}/edit`"
               exact
@@ -35,12 +27,23 @@
               />
               Edit
             </b-btn>
+
+            <b-btn
+              v-b-modal.registerModal
+              variant="primary"
+            >
+              <font-awesome-icon
+                icon="check"
+                class="mr-1"
+              />
+              Register
+            </b-btn>
           </div>
         </b-col>
 
         <b-col md="8">
           <div>
-            <p class="pr-4">{{ event.description }}</p>
+            <div v-html="event.description" />
           </div>
         </b-col>
 
