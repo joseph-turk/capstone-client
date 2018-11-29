@@ -73,6 +73,17 @@
             />
           </b-form-group>
 
+          <b-form-group
+            label="Event Image"
+            label-for="eventImage"
+          >
+            <b-form-file
+              id="eventImage"
+              v-model="image"
+              placeholder="Choose an image..."
+            />
+          </b-form-group>
+
           <div class="mt-5">
             <b-button
               type="submit"
@@ -107,7 +118,8 @@ export default {
       date: null,
       startTime: null,
       endTime: null,
-      capacity: null
+      capacity: null,
+      image: null
     }
   },
 
@@ -123,13 +135,19 @@ export default {
 
   methods: {
     submit () {
+      let formData = new FormData()
+      formData.append('name', this.name)
+      formData.append('description', this.description)
+      formData.append('start', this.eventStart.toUTCString())
+      formData.append('end', this.eventEnd.toUTCString())
+      formData.append('capacity', this.capacity)
+      formData.append('image', this.image)
+
       axios
-        .post('https://localhost:5001/api/events', {
-          name: this.name,
-          description: this.description,
-          start: this.eventStart,
-          end: this.eventEnd,
-          capacity: this.capacity
+        .post('https://localhost:5001/api/events', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         })
         .then(() => { this.$router.push('/events') })
     }

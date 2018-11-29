@@ -82,11 +82,20 @@
         </b-collapse>
 
         <div v-if="loading === false">
-          <event-preview
-            v-for="event in sortedEvents"
-            :key="event.id"
-            :event="event"
-          />
+          <div v-if="sortedEvents.length > 0">
+            <event-preview
+              v-for="event in sortedEvents"
+              :key="event.id"
+              :event="event"
+            />
+          </div>
+
+          <div
+            v-else
+            class="my-3"
+          >
+            <h3>No events found</h3>
+          </div>
         </div>
 
         <loading-icon v-else />

@@ -2,7 +2,8 @@
   <b-card class="my-3">
     <div class="d-flex">
       <b-img
-        blank
+        :blank="!event.imageUrl"
+        :src="imageSrc"
         blank-color="#C4C4C4"
         width="150"
         height="150"
@@ -61,6 +62,10 @@ export default {
 
     eventStart () {
       return moment.utc(this.event.start).local().format('MM/DD/YYYY (h:mm A)')
+    },
+
+    imageSrc () {
+      return `https://localhost:5001/uploads/${this.event.imageUrl}`
     }
   }
 }

@@ -2,7 +2,7 @@
   <b-container>
     <b-row class="py-4">
       <b-col>
-        <h1 class="mb-4">Create New Event</h1>
+        <h1 class="mb-4">Edit {{ name }}</h1>
 
         <b-form @submit.prevent="submit">
           <b-form-group
@@ -174,7 +174,7 @@ export default {
 
     deleteEvent () {
       axios
-        .delete(`https://localhost:5001/api/events/${this.event.id}`)
+        .delete(`https://localhost:5001/api/events/${this.eventId}`)
         .then(() => this.$router.push('/events'))
     }
   }
