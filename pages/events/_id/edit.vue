@@ -77,6 +77,10 @@
               type="submit"
               variant="primary"
             >
+              <font-awesome-icon
+                icon="check"
+                class="mr-1"
+              />
               Save
             </b-btn>
 
@@ -84,6 +88,10 @@
               :to="`/events/${eventId}`"
               variant="secondary"
             >
+              <font-awesome-icon
+                icon="times"
+                class="mr-1"
+              />
               Cancel
             </b-btn>
 
@@ -91,6 +99,10 @@
               v-b-modal.confirmDelete
               variant="danger"
             >
+              <font-awesome-icon
+                icon="ban"
+                class="mr-1"
+              />
               Delete
             </b-btn>
           </div>

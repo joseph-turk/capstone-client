@@ -9,7 +9,13 @@ import {
   faCaretDown,
   faCaretUp,
   faSearch,
-  faChevronLeft
+  faChevronLeft,
+  faPencilAlt,
+  faStar,
+  faCheck,
+  faEye,
+  faBan,
+  faSync
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -20,6 +26,12 @@ library.add(
   faCaretDown,
   faCaretUp,
   faSearch,
-  faChevronLeft
+  faChevronLeft,
+  faPencilAlt,
+  faStar,
+  faCheck,
+  faEye,
+  faBan,
+  faSync
 )
 Vue.component('font-awesome-icon', FontAwesomeIcon)

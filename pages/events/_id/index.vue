@@ -1,35 +1,26 @@
 <template>
-  <b-container>
-    <b-row class="py-4">
-      <b-col>
-        <div v-if="loading === false">
-          <h1 class="mb-4">{{ event.name }}</h1>
+  <div>
+    <event-hero
+      v-if="loading === false"
+      :image-url="event.imageUrl"
+      :title-text="event.name"
+    />
 
-          <p>{{ event.description }}</p>
-
-          <ul>
-            <li><strong>Date:</strong> {{ eventDate }}</li>
-            <li><strong>Start:</strong> {{ eventStart }}</li>
-            <li><strong>End:</strong> {{ eventEnd }}</li>
-            <li><strong>Capacity:</strong> {{ event.capacity }}</li>
-            <li>
-              <strong>Registrations:</strong> {{ event.registrations.length }}
-              <ul>
-                <li
-                  v-for="registration in event.registrations"
-                  :key="registration.id"
-                >
-                  {{ registration.registrant.name }}
-                </li>
-              </ul>
-            </li>
-          </ul>
-
-          <div class="mt-5">
+    <b-container>
+      <b-row
+        v-if="loading === false"
+        class="py-4"
+      >
+        <b-col cols="12">
+          <div class="mb-4">
             <b-btn
               v-b-modal.registerModal
               variant="primary"
             >
+              <font-awesome-icon
+                icon="check"
+                class="mr-1"
+              />
               Register
             </b-btn>
 
@@ -38,54 +29,76 @@
               exact
               variant="secondary"
             >
+              <font-awesome-icon
+                icon="pencil-alt"
+                class="mr-1"
+              />
               Edit
             </b-btn>
+          </div>
+        </b-col>
 
+        <b-col md="8">
+          <div>
+            <p class="pr-4">{{ event.description }}</p>
+          </div>
+        </b-col>
+
+        <b-col md="4">
+          <event-details :event="event" />
+        </b-col>
+
+        <b-col cols="12">
+          <div class="mt-5">
             <back-button
               to="/events"
               text="Back to All Events"
             />
           </div>
-        </div>
+        </b-col>
+      </b-row>
 
-        <div
-          v-else
-          class="text-center"
-        >
-          <font-awesome-icon
-            icon="spinner"
-            pulse
-            size="3x"
-          />
-        </div>
-      </b-col>
-    </b-row>
+      <div
+        v-else
+        class="text-center py-4"
+      >
+        <font-awesome-icon
+          icon="spinner"
+          pulse
+          size="3x"
+        />
+      </div>
 
-    <b-modal
-      id="confirmDelete"
-      title="Are you sure?"
-      ok-variant="danger"
-      ok-title="Delete"
-      @ok="deleteEvent"
-    >
-      <p class="my-2">This will permanently delete this event.</p>
-    </b-modal>
+      <b-modal
+        id="confirmDelete"
+        title="Are you sure?"
+        ok-variant="danger"
+        ok-title="Delete"
+        @ok="deleteEvent"
+      >
+        <p class="my-2">This will permanently delete this event.</p>
+      </b-modal>
 
-    <register-modal
-      :event="event"
-      @registered="fetchEvent(false)"
-    />
-  </b-container>
+      <register-modal
+        :event="event"
+        @registered="fetchEvent(false)"
+      />
+    </b-container>
+  </div>
 </template>
 
 <script>
 import axios from 'axios'
 import moment from 'moment'
+import EventHero from '~/components/events/EventHero.vue'
+import EventDetails from '~/components/events/EventDetails.vue'
 import RegisterModal from '~/components/registrations/RegisterModal.vue'
 import BackButton from '~/components/BackButton.vue'
 
 export default {
   components: {
+    EventHero,
+    EventDetails,
     RegisterModal,
     BackButton
   },

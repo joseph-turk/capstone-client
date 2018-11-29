@@ -6,15 +6,7 @@
           <h1 class="mb-0">Events</h1>
 
           <div>
-            <b-form-radio-group
-              id="filterButtons"
-              v-model="selectedFilter"
-              :options="eventFilters"
-              buttons
-              button-variant="secondary"
-            />
-
-            <b-button
+            <b-btn
               to="/events/create"
               variant="primary"
             >
@@ -23,7 +15,14 @@
                 class="mr-1"
               />
               Create New Event
-            </b-button>
+            </b-btn>
+
+            <b-btn
+              variant="secondary"
+              @click="fetchEvents"
+            >
+              <font-awesome-icon icon="sync" />
+            </b-btn>
 
             <b-btn
               v-b-toggle.moreFilters
@@ -49,34 +48,46 @@
               inline
               @submit.prevent="searchForEvents"
             >
-              <b-form-input
-                v-model="searchString"
-                type="text"
-                placeholder="Search Events"
-                aria-label="Search Events"
-                class="mr-2"
-              />
-              <b-btn
-                variant="primary"
-                class="mr-2"
-                @click="searchForEvents"
-              >
-                <font-awesome-icon
-                  icon="search"
-                  class="mr-1"
+              <b-form-row class="w-100 mb-3">
+                <b-form-input
+                  v-model="searchString"
+                  type="text"
+                  placeholder="Search Events"
+                  aria-label="Search Events"
+                  class="mr-2"
                 />
-                Search
-              </b-btn>
-              <b-btn
-                variant="secondary"
-                @click="resetSearch"
-              >
-                <font-awesome-icon
-                  icon="times"
-                  class="mr-1"
+                <b-btn
+                  variant="primary"
+                  class="mr-2"
+                  @click="searchForEvents"
+                >
+                  <font-awesome-icon
+                    icon="search"
+                    class="mr-1"
+                  />
+                  Search
+                </b-btn>
+                <b-btn
+                  variant="secondary"
+                  @click="resetSearch"
+                >
+                  <font-awesome-icon
+                    icon="times"
+                    class="mr-1"
+                  />
+                  Reset
+                </b-btn>
+              </b-form-row>
+
+              <b-form-row class="w-100">
+                <b-form-radio-group
+                  id="filterButtons"
+                  v-model="selectedFilter"
+                  :options="eventFilters"
+                  buttons
+                  button-variant="secondary"
                 />
-                Reset
-              </b-btn>
+              </b-form-row>
             </b-form>
           </b-card>
         </b-collapse>
