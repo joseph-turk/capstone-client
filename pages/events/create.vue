@@ -89,6 +89,10 @@
               type="submit"
               variant="primary"
             >
+              <font-awesome-icon
+                icon="check"
+                class="mr-1"
+              />
               Submit
             </b-button>
 
@@ -96,6 +100,10 @@
               to="/events"
               variant="secondary"
             >
+              <font-awesome-icon
+                icon="times"
+                class="mr-1"
+              />
               Cancel
             </b-button>
           </div>
