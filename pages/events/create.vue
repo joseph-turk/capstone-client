@@ -35,26 +35,12 @@
             />
           </b-form-group>
 
-          <b-form-group
-            label="Start Time"
-            label-for="eventStartTime"
-          >
-            <b-form-input
-              id="eventStartTime"
-              v-model="startTime"
-              type="time"
-            />
+          <b-form-group label="Start Time">
+            <time-picker ref="startTime" />
           </b-form-group>
 
-          <b-form-group
-            label="End Time"
-            label-for="eventEndTime"
-          >
-            <b-form-input
-              id="eventEndTime"
-              v-model="endTime"
-              type="time"
-            />
+          <b-form-group label="End Time">
+            <time-picker ref="endTime" />
           </b-form-group>
 
           <b-form-group
@@ -112,12 +98,14 @@
 <script>
 import axios from 'axios'
 import TextEditor from '~/components/TextEditor.vue'
+import TimePicker from '~/components/TimePicker.vue'
 
 export default {
   middleware: 'authenticated',
 
   components: {
-    TextEditor
+    TextEditor,
+    TimePicker
   },
 
   data () {
@@ -125,20 +113,26 @@ export default {
       name: '',
       description: '',
       date: null,
-      startTime: null,
-      endTime: null,
       capacity: null,
       image: null
     }
   },
 
   computed: {
+    startTime () {
+      return this.$refs.startTime ? this.$refs.startTime.calculatedTime : null
+    },
+
+    endTime () {
+      return this.$refs.endTime ? this.$refs.endTime.calculatedTime : null
+    },
+
     eventStart () {
       return new Date(`${this.date} ${this.startTime}`)
     },
 
     eventEnd () {
-      return new Date(`${this.date} ${this.endTime}`)
+      return new Date(`${this.date} ${this.$refs.endTime.calculatedTime}`)
     }
   },
 
@@ -158,7 +152,12 @@ export default {
             'Content-Type': 'multipart/form-data'
           }
         })
-        .then(() => { this.$router.push('/events') })
+        .then(() => this.$router.push('/events'))
+    },
+
+    setStartTime (e) {
+      console.log(e)
+      this.startTime = e
     }
   }
 }
