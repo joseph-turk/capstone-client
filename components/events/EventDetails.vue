@@ -7,19 +7,19 @@
   >
     <b-list-group flush>
       <b-list-group-item>
-        <strong>Date:</strong> {{ eventDate }}
+        <strong>Date:</strong> {{ loading === false ? eventDate : '' }}
       </b-list-group-item>
       <b-list-group-item>
-        <strong>Start:</strong> {{ eventStart }}
+        <strong>Start:</strong> {{ loading === false ? eventStart : '' }}
       </b-list-group-item>
       <b-list-group-item>
-        <strong>End:</strong> {{ eventEnd }}
+        <strong>End:</strong> {{ loading === false ? eventEnd : '' }}
       </b-list-group-item>
       <b-list-group-item>
-        <strong>Capacity:</strong> {{ event.capacity }}
+        <strong>Capacity:</strong> {{ loading === false ? event.capacity : '' }}
       </b-list-group-item>
       <b-list-group-item>
-        <strong>Registrations:</strong> {{ event.registrations.length }}
+        <strong>Registrations:</strong> {{ loading === false ? event.registrations.length : '' }}
       </b-list-group-item>
     </b-list-group>
   </b-card>
@@ -32,6 +32,10 @@ export default {
   props: {
     event: {
       type: Object,
+      required: true
+    },
+    loading: {
+      type: Boolean,
       required: true
     }
   },

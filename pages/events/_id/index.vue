@@ -1,16 +1,13 @@
 <template>
   <div>
     <event-hero
-      v-if="loading === false"
-      :image-url="event.imageUrl"
-      :title-text="event.name"
+      :image-id="event ? event.imageId : ''"
+      :image-extension="event ? event.imageExtension : ''"
+      :title-text="event ? event.name : ''"
     />
 
     <b-container>
-      <b-row
-        v-if="loading === false"
-        class="py-4"
-      >
+      <b-row class="py-4">
         <b-col
           cols="12"
           class="mb-5"
@@ -18,6 +15,7 @@
           <div class="text-right">
             <b-btn
               :to="`/events/${event.id}/edit`"
+              :disabled="loading"
               exact
               variant="secondary"
             >
@@ -30,6 +28,7 @@
 
             <b-btn
               v-b-modal.registerModal
+              :disabled="loading"
               variant="primary"
             >
               <font-awesome-icon
@@ -42,13 +41,21 @@
         </b-col>
 
         <b-col md="8">
-          <div>
-            <div v-html="event.description" />
+          <div v-if="loading === false">
+            <div
+              class="mr-4"
+              v-html="event.description"
+            />
           </div>
+
+          <loading-icon v-else />
         </b-col>
 
         <b-col md="4">
-          <event-details :event="event" />
+          <event-details
+            :event="event"
+            :loading="loading"
+          />
         </b-col>
 
         <b-col cols="12">
@@ -60,17 +67,6 @@
           </div>
         </b-col>
       </b-row>
-
-      <div
-        v-else
-        class="text-center py-4"
-      >
-        <font-awesome-icon
-          icon="spinner"
-          pulse
-          size="3x"
-        />
-      </div>
 
       <b-modal
         id="confirmDelete"
@@ -97,13 +93,15 @@ import EventHero from '~/components/events/EventHero.vue'
 import EventDetails from '~/components/events/EventDetails.vue'
 import RegisterModal from '~/components/registrations/RegisterModal.vue'
 import BackButton from '~/components/BackButton.vue'
+import LoadingIcon from '~/components/LoadingIcon.vue'
 
 export default {
   components: {
     EventHero,
     EventDetails,
     RegisterModal,
-    BackButton
+    BackButton,
+    LoadingIcon
   },
 
   data () {
@@ -122,15 +120,24 @@ export default {
 
   computed: {
     eventDate () {
-      return moment.utc(this.event.start).local().format('MMMM Do, YYYY')
+      return moment
+        .utc(this.event.start)
+        .local()
+        .format('MMMM Do, YYYY')
     },
 
     eventStart () {
-      return moment.utc(this.event.start).local().format('h:mm A')
+      return moment
+        .utc(this.event.start)
+        .local()
+        .format('h:mm A')
     },
 
     eventEnd () {
-      return moment.utc(this.event.end).local().format('h:mm A')
+      return moment
+        .utc(this.event.end)
+        .local()
+        .format('h:mm A')
     }
   },
 

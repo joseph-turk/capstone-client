@@ -2,7 +2,7 @@
   <div
     :style="{
       'background-color': '#343a40',
-      'background-image': `url(https://localhost:5001/uploads/${imageUrl})`,
+      'background-image': `url(https://localhost:5001/uploads/${imageId}/hero${imageExtension})`,
       'background-size': 'cover',
       'background-position': 'center',
       'height': '500px',
@@ -35,7 +35,11 @@
 <script>
 export default {
   props: {
-    imageUrl: {
+    imageId: {
+      type: String,
+      required: true
+    },
+    imageExtension: {
       type: String,
       required: true
     },

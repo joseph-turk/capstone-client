@@ -1,14 +1,14 @@
 <template>
   <nuxt-link :to="`/events/${event.id}`">
     <b-card
-      :bg-variant="hover && 'light'"
+      :bg-variant="hover ? 'light' : ''"
       class="my-3"
       @mouseover="hover = true"
       @mouseout="hover = false"
     >
       <div class="d-flex">
         <b-img
-          :blank="!event.imageUrl"
+          :blank="!imageSrc"
           :src="imageSrc"
           blank-color="#C4C4C4"
           width="150"
@@ -65,18 +65,23 @@ export default {
     },
 
     eventStart () {
-      return moment.utc(this.event.start).local().format('MMMM Do, YYYY (h:mm A)')
+      return moment
+        .utc(this.event.start)
+        .local()
+        .format('MMMM Do, YYYY (h:mm A)')
     },
 
     imageSrc () {
-      return `https://localhost:5001/uploads/${this.event.imageUrl}`
+      return this.event
+        ? `https://localhost:5001/uploads/${this.event.imageId}/thumbnail${
+          this.event.imageExtension
+        }`
+        : null
     }
   },
 
   methods: {
-    updateCardBackground () {
-
-    }
+    updateCardBackground () {}
   }
 }
 </script>

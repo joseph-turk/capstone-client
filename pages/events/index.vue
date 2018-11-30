@@ -18,6 +18,7 @@
             </b-btn>
 
             <b-btn
+              ref="refreshButton"
               variant="secondary"
               @click="fetchEvents"
             >
@@ -159,11 +160,13 @@ export default {
         case 'allEvents':
           return selectedEventsArray
         case 'upcomingEvents':
-          return selectedEventsArray
-            .filter(e => moment.utc(e.start).format() > moment.utc().format())
+          return selectedEventsArray.filter(
+            e => moment.utc(e.start).format() > moment.utc().format()
+          )
         case 'pastEvents':
-          return selectedEventsArray
-            .filter(e => moment.utc(e.start).format() < moment.utc().format())
+          return selectedEventsArray.filter(
+            e => moment.utc(e.start).format() < moment.utc().format()
+          )
         default:
           return selectedEventsArray
       }
@@ -179,6 +182,7 @@ export default {
       this.loading = true
       const events = await axios.get('https://localhost:5001/api/events')
       this.events = events.data
+      this.$refs.refreshButton.blur()
       this.loading = false
     },
 
@@ -188,16 +192,19 @@ export default {
     },
 
     searchForEvents () {
-      this.searchedEvents = this.searchString.length > 0
-        ? this.selectedEvents.filter(e => {
-          const eventName = e.name.toLowerCase()
-          const eventDescription = e.description.toLowerCase()
-          const searchTerm = this.searchString.toLowerCase()
+      this.searchedEvents =
+        this.searchString.length > 0
+          ? this.selectedEvents.filter(e => {
+            const eventName = e.name.toLowerCase()
+            const eventDescription = e.description.toLowerCase()
+            const searchTerm = this.searchString.toLowerCase()
 
-          return eventName.includes(searchTerm) ||
-            eventDescription.includes(searchTerm)
-        })
-        : null
+            return (
+              eventName.includes(searchTerm) ||
+                eventDescription.includes(searchTerm)
+            )
+          })
+          : null
     },
 
     resetSearch () {
