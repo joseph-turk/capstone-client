@@ -91,4 +91,8 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+.card {
+  transition: background-color 0.1s ease-in-out;
+}
 </style>
