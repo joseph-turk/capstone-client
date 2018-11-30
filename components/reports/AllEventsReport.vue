@@ -16,6 +16,7 @@
 
 <script>
 import axios from 'axios'
+import moment from 'moment'
 import LoadingIcon from '~/components/LoadingIcon.vue'
 
 export default {
@@ -38,7 +39,10 @@ export default {
       this.events = events.data.map(event => {
         return {
           'Name': event.name,
-          '# Registrations': event.registrations.length
+          'Date': moment(event.start).format('MM/DD/YYYY'),
+          'Capacity': event.capacity,
+          '# Registrations': event.registrations.length,
+          'Slots Available': event.capacity - event.registrations.length
         }
       })
       this.loading = false

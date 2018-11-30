@@ -2,11 +2,17 @@
   <b-container fluid>
     <b-row class="py-4">
       <b-col>
+        <all-events-report class="h-100" />
+      </b-col>
+    </b-row>
+
+    <b-row class="pb-4">
+      <b-col>
         <all-registrants-report class="h-100" />
       </b-col>
 
       <b-col>
-        <all-events-report class="h-100" />
+        <all-primary-contacts-report class="h-100" />
       </b-col>
     </b-row>
   </b-container>
@@ -15,11 +21,13 @@
 <script>
 import AllRegistrantsReport from '~/components/reports/AllRegistrantsReport.vue'
 import AllEventsReport from '~/components/reports/AllEventsReport.vue'
+import AllPrimaryContactsReport from '~/components/reports/AllPrimaryContactsReport.vue'
 
 export default {
   components: {
     AllRegistrantsReport,
-    AllEventsReport
+    AllEventsReport,
+    AllPrimaryContactsReport
   }
 }
 </script>
