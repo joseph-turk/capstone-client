@@ -117,7 +117,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '~/plugins/axios'
 import moment from 'moment'
 import EventPreview from '~/components/events/EventPreview.vue'
 import LoadingIcon from '~/components/LoadingIcon.vue'
@@ -180,7 +180,7 @@ export default {
   methods: {
     async fetchEvents () {
       this.loading = true
-      const events = await axios.get('https://localhost:5001/api/events')
+      const events = await axios.get('/api/events')
       this.events = events.data
       this.$refs.refreshButton.blur()
       this.loading = false

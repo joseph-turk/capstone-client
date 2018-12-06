@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '~/plugins/axios'
 import moment from 'moment'
 import LoadingIcon from '~/components/LoadingIcon.vue'
 
@@ -35,12 +35,12 @@ export default {
 
   methods: {
     async fetchEvents () {
-      const events = await axios.get('https://localhost:5001/api/events')
+      const events = await axios.get('/api/events')
       this.events = events.data.map(event => {
         return {
-          'Name': event.name,
-          'Date': moment(event.start).format('MM/DD/YYYY'),
-          'Capacity': event.capacity,
+          Name: event.name,
+          Date: moment(event.start).format('MM/DD/YYYY'),
+          Capacity: event.capacity,
           '# Registrations': event.registrations.length,
           'Slots Available': event.capacity - event.registrations.length
         }

@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '~/plugins/axios'
 import TextEditor from '~/components/TextEditor.vue'
 import TimePicker from '~/components/TimePicker.vue'
 
@@ -138,6 +138,8 @@ export default {
 
   methods: {
     submit () {
+      let authorization = `Bearer ${this.$store.state.auth.accessToken}`
+      console.log(authorization)
       let formData = new FormData()
       formData.append('name', this.name)
       formData.append('description', this.description)
@@ -147,9 +149,10 @@ export default {
       formData.append('image', this.image)
 
       axios
-        .post('https://localhost:5001/api/events', formData, {
+        .post('/api/events', formData, {
           headers: {
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'multipart/form-data',
+            Authorization: authorization
           }
         })
         .then(() => this.$router.push('/events'))

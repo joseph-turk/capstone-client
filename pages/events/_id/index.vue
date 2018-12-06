@@ -2,7 +2,7 @@
   <div>
     <event-hero
       :image-id="event ? event.imageId : ''"
-      :image-extension="event ? event.imageExtension : ''"
+      :image-extension="event.imageExtension ? event.imageExtension : ''"
       :title-text="event ? event.name : ''"
     />
 
@@ -14,6 +14,7 @@
         >
           <div class="text-right">
             <b-btn
+              v-if="isMyEvent"
               :to="`/events/${event.id}/edit`"
               :disabled="loading"
               exact
@@ -87,7 +88,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '~/plugins/axios'
 import moment from 'moment'
 import EventHero from '~/components/events/EventHero.vue'
 import EventDetails from '~/components/events/EventDetails.vue'
@@ -114,6 +115,7 @@ export default {
         end: null,
         capacity: null
       },
+      isMyEvent: false,
       loading: true
     }
   },
@@ -149,16 +151,25 @@ export default {
     async fetchEvent (setLoading) {
       if (setLoading) this.loading = true
       const eventId = this.$route.params.id
-      const event = await axios.get(
-        `https://localhost:5001/api/events/${eventId}`
-      )
-      this.event = event.data
+      let headers = null
+
+      if (this.$store.state.auth) {
+        headers = {
+          Authorization: `Bearer ${this.$store.state.auth.accessToken}`
+        }
+      }
+
+      const event = await axios.get(`/api/events/${eventId}`, {
+        headers: headers
+      })
+      this.event = event.data.event
+      this.isMyEvent = event.data.isMyEvent
       if (setLoading) this.loading = false
     },
 
     deleteEvent () {
       axios
-        .delete(`https://localhost:5001/api/events/${this.event.id}`)
+        .delete(`/api/events/${this.event.id}`)
         .then(() => this.$router.push('/events'))
     }
   }

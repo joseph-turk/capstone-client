@@ -21,12 +21,14 @@
           >
             Reports
           </b-nav-item>
-          <b-nav-item
-            v-if="$store.state.auth"
-            @click="logOut"
+          <b-nav-item-dropdown
+            v-if="$store.state.auth && $store.state.user"
+            :text="$store.state.user.email"
+            right
           >
-            Log Out
-          </b-nav-item>
+            <b-dropdown-item to="/profile">Profile</b-dropdown-item>
+            <b-dropdown-item @click="logOut">Log Out</b-dropdown-item>
+          </b-nav-item-dropdown>
           <b-nav-item
             v-else
             to="/login"
@@ -46,7 +48,9 @@ export default {
   methods: {
     logOut () {
       Cookie.remove('auth')
+      Cookie.remove('user')
       this.$store.commit('setAuth', null)
+      this.$store.commit('setUser', null)
       this.$router.push('/')
     }
   }

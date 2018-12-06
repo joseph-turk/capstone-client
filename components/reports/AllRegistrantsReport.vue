@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '~/plugins/axios'
 import LoadingIcon from '~/components/LoadingIcon.vue'
 
 export default {
@@ -38,10 +38,10 @@ export default {
 
   methods: {
     async fetchRegistrants () {
-      const registrants = await axios.get(`https://localhost:5001/api/registrants`)
+      const registrants = await axios.get(`/api/registrants`)
       this.registrants = registrants.data.map(registrant => {
         return {
-          'Name': registrant.name,
+          Name: registrant.name,
           '# Registrations': registrant.registrations.length
         }
       })

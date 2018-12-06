@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '~/plugins/axios'
 import LoadingIcon from '~/components/LoadingIcon.vue'
 
 export default {
@@ -38,10 +38,10 @@ export default {
 
   methods: {
     async fetchPrimaryContacts () {
-      const primaryContacts = await axios.get(`https://localhost:5001/api/primarycontacts`)
+      const primaryContacts = await axios.get(`/api/primarycontacts`)
       this.primaryContacts = primaryContacts.data.map(contact => {
         return {
-          'Name': contact.name,
+          Name: contact.name,
           '# Registrations': contact.registrations.length
         }
       })

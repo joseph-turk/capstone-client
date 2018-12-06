@@ -49,7 +49,7 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from '~/plugins/axios'
 const Cookie = process.browser ? require('js-cookie') : undefined
 
 export default {
@@ -62,9 +62,25 @@ export default {
 
   methods: {
     submit () {
-      this.$store.commit('setAuth', { accessToken: 'fakeToken' })
-      Cookie.set('auth', { accessToken: 'fakeToken' })
-      this.$router.push('/')
+      axios
+        .post('/api/users/authenticate', {
+          email: this.email,
+          password: this.password
+        })
+        .then(response => {
+          console.log(response)
+          this.$store.commit('setAuth', { accessToken: response.data.token })
+          this.$store.commit('setUser', {
+            email: response.data.email,
+            id: response.data.id
+          })
+          Cookie.set('auth', { accessToken: response.data.token })
+          Cookie.set('user', {
+            email: response.data.email,
+            id: response.data.id
+          })
+          this.$router.push('/')
+        })
     }
   }
 }

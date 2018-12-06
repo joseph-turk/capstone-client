@@ -2,7 +2,7 @@
   <div
     :style="{
       'background-color': '#343a40',
-      'background-image': `url(https://localhost:5001/uploads/${imageId}/hero${imageExtension})`,
+      'background-image': `url(http://localhost:5000/uploads/${imageId}/hero${imageExtension})`,
       'background-size': 'cover',
       'background-position': 'center',
       'height': '500px',

@@ -18,19 +18,19 @@ export default {
 
   data () {
     return {
-      content: this.value,
       editorOption: {
         modules: {
           toolbar: [
             [{ header: [false, 3, 4] }],
             ['bold', 'italic', 'underline'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            [{ 'align': [] }],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['align'],
             ['clean']
           ]
         },
         placeholder: 'Enter a description...'
-      }
+      },
+      content: this.value
     }
   },
 

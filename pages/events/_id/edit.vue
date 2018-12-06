@@ -20,11 +20,9 @@
             label="Event Description"
             label-for="eventDescription"
           >
-            <b-form-textarea
-              id="eventDescription"
+            <text-editor
               v-model="description"
-              :rows="3"
-              required
+              :value="description"
             />
           </b-form-group>
 
@@ -123,11 +121,18 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '~/plugins/axios'
 import moment from 'moment'
+import TextEditor from '~/components/TextEditor.vue'
+import TimePicker from '~/components/TimePicker.vue'
 
 export default {
   middleware: 'authenticated',
+
+  components: {
+    TextEditor,
+    TimePicker
+  },
 
   data () {
     return {
@@ -158,35 +163,43 @@ export default {
 
   methods: {
     submit () {
-      console.log(`sending PUT request to /api/events/${this.eventId}`)
       axios
-        .put(`https://localhost:5001/api/events/${this.eventId}`, {
+        .put(`/api/events/${this.eventId}`, {
           name: this.name,
           description: this.description,
           start: this.eventStart,
           end: this.eventEnd,
           capacity: this.capacity
         })
-        .then(() => { this.$router.push(`/events/${this.eventId}`) })
+        .then(() => {
+          this.$router.push(`/events/${this.eventId}`)
+        })
     },
 
     async fetchEvent () {
       const eventId = this.$route.params.id
-      const event = await axios.get(
-        `https://localhost:5001/api/events/${eventId}`
-      )
-      this.eventId = event.data.id
-      this.name = event.data.name
-      this.description = event.data.description
-      this.date = moment.utc(event.data.start).local().format('YYYY-MM-DD')
-      this.startTime = moment.utc(event.data.start).local().format('HH:mm')
-      this.endTime = moment.utc(event.data.end).local().format('HH:mm')
-      this.capacity = event.data.capacity
+      const event = await axios.get(`/api/events/${eventId}`)
+      this.eventId = event.data.event.id
+      this.name = event.data.event.name
+      this.description = event.data.event.description
+      this.date = moment
+        .utc(event.data.event.start)
+        .local()
+        .format('YYYY-MM-DD')
+      this.startTime = moment
+        .utc(event.data.event.start)
+        .local()
+        .format('HH:mm')
+      this.endTime = moment
+        .utc(event.data.event.end)
+        .local()
+        .format('HH:mm')
+      this.capacity = event.data.event.capacity
     },
 
     deleteEvent () {
       axios
-        .delete(`https://localhost:5001/api/events/${this.eventId}`)
+        .delete(`/api/events/${this.eventId}`)
         .then(() => this.$router.push('/events'))
     }
   }
