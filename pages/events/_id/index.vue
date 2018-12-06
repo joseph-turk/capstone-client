@@ -12,32 +12,39 @@
           cols="12"
           class="mb-5"
         >
-          <div class="text-right">
-            <b-btn
-              v-if="isMyEvent"
-              :to="`/events/${event.id}/edit`"
-              :disabled="loading"
-              exact
-              variant="secondary"
-            >
-              <font-awesome-icon
-                icon="pencil-alt"
-                class="mr-1"
-              />
-              Edit
-            </b-btn>
+          <div class="d-flex justify-content-between align-items-center">
+            <back-button
+              to="/events"
+              text="Back to All Events"
+            />
 
-            <b-btn
-              v-b-modal.registerModal
-              :disabled="loading"
-              variant="primary"
-            >
-              <font-awesome-icon
-                icon="check"
-                class="mr-1"
-              />
-              Register
-            </b-btn>
+            <div>
+              <b-btn
+                v-if="isMyEvent"
+                :to="`/events/${event.id}/edit`"
+                :disabled="loading"
+                exact
+                variant="secondary"
+              >
+                <font-awesome-icon
+                  icon="pencil-alt"
+                  class="mr-1"
+                />
+                Edit
+              </b-btn>
+
+              <b-btn
+                v-b-modal.registerModal
+                :disabled="loading"
+                variant="primary"
+              >
+                <font-awesome-icon
+                  icon="check"
+                  class="mr-1"
+                />
+                Register
+              </b-btn>
+            </div>
           </div>
         </b-col>
 
@@ -57,15 +64,6 @@
             :event="event"
             :loading="loading"
           />
-        </b-col>
-
-        <b-col cols="12">
-          <div class="mt-5">
-            <back-button
-              to="/events"
-              text="Back to All Events"
-            />
-          </div>
         </b-col>
       </b-row>
 
