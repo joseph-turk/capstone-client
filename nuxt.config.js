@@ -1,4 +1,5 @@
 const pkg = require('./package')
+require('dotenv').config()
 
 module.exports = {
   mode: 'universal',
@@ -43,7 +44,8 @@ module.exports = {
   */
   modules: [
     // Doc: https://bootstrap-vue.js.org/docs/
-    'bootstrap-vue/nuxt'
+    'bootstrap-vue/nuxt',
+    '@nuxtjs/dotenv'
   ],
 
   /*
@@ -64,5 +66,9 @@ module.exports = {
         })
       }
     }
+  },
+
+  env: {
+    apiUrl: process.env.BASE_URL
   }
 }
