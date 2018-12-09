@@ -31,7 +31,14 @@ export default {
           key: 'name',
           label: 'Name',
           formatter: (val, key, item) => {
-            return { name: item.name, id: item.id }
+            return {
+              name:
+                item.registrations.filter(r => !r.isWaitList).length >=
+                item.capacity
+                  ? `${item.name} (Wait List)`
+                  : item.name,
+              id: item.id
+            }
           }
         },
         {
@@ -41,7 +48,15 @@ export default {
         {
           key: 'registrations',
           label: '# Registrations',
-          formatter: (val, key, item) => item.registrations.length
+          formatter: (val, key, item) =>
+            item.registrations.filter(r => !r.isWaitList).length
+        },
+        {
+          key: 'waitList',
+          label: '# Wait List',
+          formatter: (val, key, item) => {
+            return item.registrations.filter(r => r.isWaitList).length
+          }
         },
         {
           key: 'date',
