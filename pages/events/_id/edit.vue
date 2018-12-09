@@ -4,7 +4,10 @@
       <b-col>
         <h1 class="mb-4">Edit {{ name }}</h1>
 
-        <b-form @submit.prevent="submit">
+        <b-form
+          v-if="!loading"
+          @submit.prevent="submit"
+        >
           <b-form-group
             label="Event Name"
             label-for="eventName"
@@ -41,10 +44,9 @@
             label="Start Time"
             label-for="eventStartTime"
           >
-            <b-form-input
-              id="eventStartTime"
-              v-model="startTime"
-              type="time"
+            <time-picker
+              ref="startTime"
+              :default-time="startTime"
             />
           </b-form-group>
 
@@ -52,10 +54,9 @@
             label="End Time"
             label-for="eventEndTime"
           >
-            <b-form-input
-              id="eventEndTime"
-              v-model="endTime"
-              type="time"
+            <time-picker
+              ref="endTime"
+              :default-time="endTime"
             />
           </b-form-group>
 
@@ -67,6 +68,25 @@
               id="eventCapacity"
               v-model="capacity"
               type="number"
+            />
+          </b-form-group>
+
+          <b-form-group label="Current Image">
+            <b-img
+              v-if="imageId"
+              :src="`http://localhost:5000/uploads/${imageId}/thumbnail${imageExtension}`"
+            />
+          </b-form-group>
+
+          <b-form-group
+            label="Update Image"
+            label-for="updatedImage"
+          >
+            <b-form-file
+              id="updatedImage"
+              v-model="image"
+              placeholder="Choose a new image..."
+              accept="image/*"
             />
           </b-form-group>
 
@@ -105,6 +125,8 @@
             </b-btn>
           </div>
         </b-form>
+
+        <loading-icon v-else />
       </b-col>
     </b-row>
 
@@ -125,13 +147,15 @@ import axios from '~/plugins/axios'
 import moment from 'moment'
 import TextEditor from '~/components/TextEditor.vue'
 import TimePicker from '~/components/TimePicker.vue'
+import LoadingIcon from '~/components/LoadingIcon.vue'
 
 export default {
   middleware: 'authenticated',
 
   components: {
     TextEditor,
-    TimePicker
+    TimePicker,
+    LoadingIcon
   },
 
   data () {
@@ -143,17 +167,28 @@ export default {
       startTime: null,
       endTime: null,
       capacity: null,
-      event: null
+      imageId: null,
+      imageExtension: null,
+      image: null,
+      loading: true
     }
   },
 
   computed: {
+    startTimePicked () {
+      return this.$refs.startTime ? this.$refs.startTime.calculatedTime : null
+    },
+
+    endTimePicked () {
+      return this.$refs.endTime ? this.$refs.endTime.calculatedTime : null
+    },
+
     eventStart () {
-      return new Date(`${this.date} ${this.startTime}`)
+      return new Date(`${this.date} ${this.startTimePicked}`)
     },
 
     eventEnd () {
-      return new Date(`${this.date} ${this.endTime}`)
+      return new Date(`${this.date} ${this.endTimePicked}`)
     }
   },
 
@@ -163,13 +198,20 @@ export default {
 
   methods: {
     submit () {
+      let formData = new FormData()
+      formData.append('name', this.name)
+      formData.append('description', this.description)
+      formData.append('start', this.eventStart.toUTCString())
+      formData.append('end', this.eventEnd.toUTCString())
+      formData.append('capacity', this.capacity)
+      if (this.image) formData.append('image', this.image)
+
       axios
-        .put(`/api/events/${this.eventId}`, {
-          name: this.name,
-          description: this.description,
-          start: this.eventStart,
-          end: this.eventEnd,
-          capacity: this.capacity
+        .put(`/api/events/${this.eventId}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${this.$store.state.auth.accessToken}`
+          }
         })
         .then(() => {
           this.$router.push(`/events/${this.eventId}`)
@@ -199,6 +241,9 @@ export default {
         .local()
         .format('HH:mm')
       this.capacity = event.data.capacity
+      this.imageId = event.data.imageId
+      this.imageExtension = event.data.imageExtension
+      this.loading = false
     },
 
     deleteEvent () {
