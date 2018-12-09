@@ -77,7 +77,11 @@
         <b-col>
           <h2>Registrations</h2>
 
-          <registration-list-table :registrations="event.registrations" />
+          <registration-list-table :registrations="registrations" />
+
+          <h2>Wait List</h2>
+
+          <registration-list-table :registrations="waitList" />
         </b-col>
       </b-row>
     </b-container>
@@ -154,6 +158,18 @@ export default {
         .utc(this.event.end)
         .local()
         .format('h:mm A')
+    },
+
+    registrations () {
+      return this.event.registrations
+        ? this.event.registrations.filter(r => !r.isWaitList)
+        : null
+    },
+
+    waitList () {
+      return this.event.registrations
+        ? this.event.registrations.filter(r => r.isWaitList)
+        : null
     }
   },
 
@@ -191,6 +207,6 @@ export default {
 
 <style scoped>
 .event-description {
-  font-size: 1.5em;
+  font-size: 1.3em;
 }
 </style>
