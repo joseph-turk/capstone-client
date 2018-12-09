@@ -51,6 +51,7 @@
             >
               <b-form-row class="w-100 mb-3">
                 <b-form-input
+                  id="searchInput"
                   v-model="searchString"
                   type="text"
                   placeholder="Search Events"
@@ -79,15 +80,38 @@
                   Reset
                 </b-btn>
               </b-form-row>
+            </b-form>
 
+            <b-form @submit.prevent>
               <b-form-row class="w-100">
-                <b-form-radio-group
-                  id="filterButtons"
-                  v-model="selectedFilter"
-                  :options="eventFilters"
-                  buttons
-                  button-variant="secondary"
-                />
+                <b-form-group
+                  label="Filter by Date"
+                  label-for="filterButtons"
+                  class="mb-0"
+                >
+                  <b-form-radio-group
+                    id="filterButtons"
+                    v-model="selectedFilter"
+                    :options="eventFilters"
+                    class="mr-3"
+                    buttons
+                    button-variant="secondary"
+                  />
+                </b-form-group>
+
+                <b-form-group
+                  label="Filter by Availability"
+                  label-for="openFilterButtons"
+                  class="mb-0"
+                >
+                  <b-form-radio-group
+                    id="openFilterButtons"
+                    v-model="selectedOpenFilter"
+                    :options="openFilters"
+                    buttons
+                    button-variant="secondary"
+                  />
+                </b-form-group>
               </b-form-row>
             </b-form>
           </b-card>
@@ -141,6 +165,12 @@ export default {
         { text: 'Past', value: 'pastEvents' },
         { text: 'All', value: 'allEvents' }
       ],
+      selectedOpenFilter: 'spotsOpen',
+      openFilters: [
+        { text: 'Spots Open', value: 'spotsOpen' },
+        { text: 'Wait List', value: 'noSpotsOpen' },
+        { text: 'All', value: 'allAvailability' }
+      ],
       searchString: '',
       showFilters: false
     }
@@ -160,14 +190,29 @@ export default {
       let selectedEventsArray = this.events
       switch (this.selectedFilter) {
         case 'allEvents':
-          return selectedEventsArray
+          break
         case 'upcomingEvents':
-          return selectedEventsArray.filter(
+          selectedEventsArray = selectedEventsArray.filter(
             e => moment.utc(e.start).format() > moment.utc().format()
           )
+          break
         case 'pastEvents':
-          return selectedEventsArray.filter(
+          selectedEventsArray = selectedEventsArray.filter(
             e => moment.utc(e.start).format() < moment.utc().format()
+          )
+          break
+        default:
+          break
+      }
+
+      switch (this.selectedOpenFilter) {
+        case 'spotsOpen':
+          return selectedEventsArray.filter(
+            e => e.registrationCount < e.capacity
+          )
+        case 'noSpotsOpen':
+          return selectedEventsArray.filter(
+            e => e.registrationCount >= e.capacity
           )
         default:
           return selectedEventsArray
