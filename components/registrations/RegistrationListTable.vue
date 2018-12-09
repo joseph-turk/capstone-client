@@ -1,6 +1,6 @@
 <template>
   <b-table
-    :items="filteredRegistrations"
+    :items="registrations"
     :fields="fields"
     bordered
   />
@@ -19,6 +19,11 @@ export default {
     return {
       fields: [
         {
+          key: 'registrant',
+          label: 'Registrant',
+          formatter: (val, key, item) => item.registrant.name
+        },
+        {
           key: 'primaryContact',
           label: 'Primary Contact',
           formatter: (val, key, item) => item.primaryContact.name
@@ -34,22 +39,11 @@ export default {
           formatter: (val, key, item) => item.primaryContact.phoneNumber
         },
         {
-          key: 'registrant',
-          label: 'Registrant',
-          formatter: (val, key, item) => item.registrant.name
-        },
-        {
           key: 'photoRelease',
           label: 'Photo Release',
           formatter: (val, key, item) => (item.hasPhotoRelease ? 'Yes' : 'No')
         }
       ]
-    }
-  },
-
-  computed: {
-    filteredRegistrations () {
-      return this.registrations.filter(r => !r.isWaitList)
     }
   }
 }

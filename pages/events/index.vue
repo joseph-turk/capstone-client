@@ -100,6 +100,7 @@
               :key="event.id"
               :event="event"
               :wait-list="event.registrationCount >= event.capacity"
+              :registration-count="event.registrationCount"
             />
           </div>
 

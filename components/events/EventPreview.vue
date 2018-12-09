@@ -30,6 +30,12 @@
             </h4>
             <h5 class="subtitle">{{ eventStart }}</h5>
           </div>
+
+          <div>
+            <p class="h6 mb-0">
+              {{ spotsOpen }} of {{ event.capacity }} spots open
+            </p>
+          </div>
         </div>
       </div>
     </b-card>
@@ -47,6 +53,10 @@ export default {
     },
     waitList: {
       type: Boolean,
+      required: true
+    },
+    registrationCount: {
+      type: Number,
       required: true
     }
   },
@@ -71,6 +81,12 @@ export default {
           this.event.imageExtension
         }`
         : null
+    },
+
+    spotsOpen () {
+      return this.event.capacity - this.event.registrationCount < 0
+        ? 0
+        : this.event.capacity - this.event.registrationCount
     }
   },
 

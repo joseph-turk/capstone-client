@@ -50,6 +50,10 @@
 
         <b-col md="8">
           <div v-if="loading === false">
+            <wait-list-alert
+              v-if="event.registrationCount >= event.capacity"
+              class="mr-4 mb-4"
+            />
             <div
               class="mr-4 event-description"
               v-html="event.description"
@@ -108,6 +112,7 @@ import axios from '~/plugins/axios'
 import moment from 'moment'
 import EventHero from '~/components/events/EventHero.vue'
 import EventDetails from '~/components/events/EventDetails.vue'
+import WaitListAlert from '~/components/events/WaitListAlert.vue'
 import RegisterModal from '~/components/registrations/RegisterModal.vue'
 import RegistrationListTable from '~/components/registrations/RegistrationListTable.vue'
 import BackButton from '~/components/BackButton.vue'
@@ -117,6 +122,7 @@ export default {
   components: {
     EventHero,
     EventDetails,
+    WaitListAlert,
     RegisterModal,
     RegistrationListTable,
     BackButton,

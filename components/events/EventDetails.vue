@@ -21,6 +21,9 @@
       <b-list-group-item>
         <strong>Registrations:</strong> {{ loading === false ? event.registrationCount : '' }}
       </b-list-group-item>
+      <b-list-group-item v-if="event.registrationCount >= event.capacity">
+        <strong>Wait List:</strong> {{ loading === false ? event.waitListCount : '' }}
+      </b-list-group-item>
     </b-list-group>
   </b-card>
 </template>
