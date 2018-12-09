@@ -178,23 +178,27 @@ export default {
 
     async fetchEvent () {
       const eventId = this.$route.params.id
-      const event = await axios.get(`/api/events/${eventId}`)
-      this.eventId = event.data.event.id
-      this.name = event.data.event.name
-      this.description = event.data.event.description
+      const event = await axios.get(`/api/events/${eventId}`, {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.auth.accessToken}`
+        }
+      })
+      this.eventId = event.data.id
+      this.name = event.data.name
+      this.description = event.data.description
       this.date = moment
-        .utc(event.data.event.start)
+        .utc(event.data.start)
         .local()
         .format('YYYY-MM-DD')
       this.startTime = moment
-        .utc(event.data.event.start)
+        .utc(event.data.start)
         .local()
         .format('HH:mm')
       this.endTime = moment
-        .utc(event.data.event.end)
+        .utc(event.data.end)
         .local()
         .format('HH:mm')
-      this.capacity = event.data.event.capacity
+      this.capacity = event.data.capacity
     },
 
     deleteEvent () {

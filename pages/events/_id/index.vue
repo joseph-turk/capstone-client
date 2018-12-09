@@ -20,7 +20,7 @@
 
             <div>
               <b-btn
-                v-if="isMyEvent"
+                v-if="event.isMyEvent"
                 :to="`/events/${event.id}/edit`"
                 :disabled="loading"
                 exact
@@ -51,7 +51,7 @@
         <b-col md="8">
           <div v-if="loading === false">
             <div
-              class="mr-4"
+              class="mr-4 event-description"
               v-html="event.description"
             />
           </div>
@@ -188,3 +188,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.event-description {
+  font-size: 1.5em;
+}
+</style>
