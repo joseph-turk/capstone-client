@@ -2,7 +2,7 @@
   <b-container>
     <b-row class="py-4">
       <b-col>
-        <h1>Log In</h1>
+        <h1>Register</h1>
 
         <b-form @submit.prevent="submit">
           <b-form-group
@@ -29,23 +29,19 @@
             />
           </b-form-group>
 
-          <div class="mb-3">
-            <b-button
-              type="submit"
-              variant="primary"
-            >
-              Submit
-            </b-button>
+          <b-button
+            type="submit"
+            variant="primary"
+          >
+            Submit
+          </b-button>
 
-            <b-button
-              to="/"
-              variant="secondary"
-            >
-              Cancel
-            </b-button>
-          </div>
-
-          <nuxt-link to="/register">Register</nuxt-link>
+          <b-button
+            to="/"
+            variant="secondary"
+          >
+            Cancel
+          </b-button>
         </b-form>
       </b-col>
     </b-row>
@@ -67,7 +63,7 @@ export default {
   methods: {
     submit () {
       axios
-        .post('/api/users/authenticate', {
+        .post('/api/users/register', {
           email: this.email,
           password: this.password
         })
