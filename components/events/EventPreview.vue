@@ -22,7 +22,7 @@
             <h4 class="card-title">
               {{ event.name }}
               <span
-                v-if="slotsAvailable === 0"
+                v-if="waitList"
                 class="text-danger"
               >
                 (Wait List)
@@ -44,6 +44,10 @@ export default {
     event: {
       type: Object,
       required: true
+    },
+    waitList: {
+      type: Boolean,
+      required: true
     }
   },
 
@@ -54,16 +58,6 @@ export default {
   },
 
   computed: {
-    slotsFilled () {
-      return this.event.registrations.filter(r => r.isWaitList === false).length
-    },
-
-    slotsAvailable () {
-      return this.event.capacity > this.slotsFilled
-        ? this.event.capacity - this.slotsFilled
-        : 0
-    },
-
     eventStart () {
       return moment
         .utc(this.event.start)

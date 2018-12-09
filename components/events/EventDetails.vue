@@ -19,7 +19,7 @@
         <strong>Capacity:</strong> {{ loading === false ? event.capacity : '' }}
       </b-list-group-item>
       <b-list-group-item>
-        <strong>Registrations:</strong> {{ loading === false ? event.registrations.length : '' }}
+        <strong>Registrations:</strong> {{ loading === false ? event.registrationCount : '' }}
       </b-list-group-item>
     </b-list-group>
   </b-card>
@@ -42,15 +42,24 @@ export default {
 
   computed: {
     eventDate () {
-      return moment.utc(this.event.start).local().format('MMMM Do, YYYY')
+      return moment
+        .utc(this.event.start)
+        .local()
+        .format('MMMM Do, YYYY')
     },
 
     eventStart () {
-      return moment.utc(this.event.start).local().format('h:mm A')
+      return moment
+        .utc(this.event.start)
+        .local()
+        .format('h:mm A')
     },
 
     eventEnd () {
-      return moment.utc(this.event.end).local().format('h:mm A')
+      return moment
+        .utc(this.event.end)
+        .local()
+        .format('h:mm A')
     }
   }
 }

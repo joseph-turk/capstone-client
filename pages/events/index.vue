@@ -99,6 +99,7 @@
               v-for="event in sortedEvents"
               :key="event.id"
               :event="event"
+              :wait-list="event.registrationCount >= event.capacity"
             />
           </div>
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <event-hero
-      :image-id="event ? event.imageId : ''"
+      :image-id="event.imageId ? event.imageId : ''"
       :image-extension="event.imageExtension ? event.imageExtension : ''"
       :title-text="event ? event.name : ''"
     />
@@ -62,26 +62,40 @@
         <b-col md="4">
           <event-details
             :event="event"
+            :registration-count="event.registrationCount ? event.registrationCount : 0"
             :loading="loading"
           />
         </b-col>
       </b-row>
 
-      <b-modal
-        id="confirmDelete"
-        title="Are you sure?"
-        ok-variant="danger"
-        ok-title="Delete"
-        @ok="deleteEvent"
-      >
-        <p class="my-2">This will permanently delete this event.</p>
-      </b-modal>
+      <hr class="mt-4">
 
-      <register-modal
-        :event="event"
-        @registered="fetchEvent(false)"
-      />
+      <b-row
+        v-if="event.isMyEvent"
+        class="py-4"
+      >
+        <b-col>
+          <h2>Registrations</h2>
+
+          <registration-list-table :registrations="event.registrations" />
+        </b-col>
+      </b-row>
     </b-container>
+
+    <b-modal
+      id="confirmDelete"
+      title="Are you sure?"
+      ok-variant="danger"
+      ok-title="Delete"
+      @ok="deleteEvent"
+    >
+      <p class="my-2">This will permanently delete this event.</p>
+    </b-modal>
+
+    <register-modal
+      :event="event"
+      @registered="fetchEvent(false)"
+    />
   </div>
 </template>
 
@@ -91,6 +105,7 @@ import moment from 'moment'
 import EventHero from '~/components/events/EventHero.vue'
 import EventDetails from '~/components/events/EventDetails.vue'
 import RegisterModal from '~/components/registrations/RegisterModal.vue'
+import RegistrationListTable from '~/components/registrations/RegistrationListTable.vue'
 import BackButton from '~/components/BackButton.vue'
 import LoadingIcon from '~/components/LoadingIcon.vue'
 
@@ -99,6 +114,7 @@ export default {
     EventHero,
     EventDetails,
     RegisterModal,
+    RegistrationListTable,
     BackButton,
     LoadingIcon
   },
@@ -160,8 +176,7 @@ export default {
       const event = await axios.get(`/api/events/${eventId}`, {
         headers: headers
       })
-      this.event = event.data.event
-      this.isMyEvent = event.data.isMyEvent
+      this.event = event.data
       if (setLoading) this.loading = false
     },
 

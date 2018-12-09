@@ -2,6 +2,7 @@
   <b-table
     :items="events"
     :fields="fields"
+    class="mb-0"
   >
     <template
       slot="name"

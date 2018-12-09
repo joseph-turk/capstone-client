@@ -15,7 +15,8 @@ import {
   faCheck,
   faEye,
   faBan,
-  faSync
+  faSync,
+  faCircle
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -32,6 +33,7 @@ library.add(
   faCheck,
   faEye,
   faBan,
-  faSync
+  faSync,
+  faCircle
 )
 Vue.component('font-awesome-icon', FontAwesomeIcon)
