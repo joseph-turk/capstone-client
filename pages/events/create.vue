@@ -139,8 +139,8 @@ export default {
   methods: {
     submit () {
       let authorization = `Bearer ${this.$store.state.auth.accessToken}`
-      console.log(authorization)
       let formData = new FormData()
+
       formData.append('name', this.name)
       formData.append('description', this.description)
       formData.append('start', this.eventStart.toUTCString())
