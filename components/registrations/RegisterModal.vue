@@ -51,36 +51,57 @@
         <b-col>
           <h5>Registrants</h5>
 
-          <b-form-group
+          <div
             v-for="(registrant, index) in registrants"
             :key="index"
-            :label-for="`name${index}`"
-            label="Name"
           >
-            <div class="d-flex align-items-center">
-              <b-form-input
-                :id="`name${index}`"
-                v-model="registrants[index].name"
-                type="text"
-                class="mr-2"
-                required
-              />
-
-              <b-btn
-                :disabled="index === 0 && registrants.length === 1"
-                type="button"
-                size="sm"
-                @click="removeRegistrant(index)"
-              >
-                <font-awesome-icon
-                  icon="times"
-                  size="xs"
-                  class="mr-1"
+            <b-form-group
+              :label-for="`name${index}`"
+              label="Name"
+            >
+              <div class="d-flex align-items-center">
+                <b-form-input
+                  :id="`name${index}`"
+                  v-model="registrants[index].name"
+                  type="text"
+                  class="mr-2"
+                  required
                 />
-                Remove
-              </b-btn>
-            </div>
-          </b-form-group>
+
+                <b-btn
+                  :disabled="index === 0 && registrants.length === 1"
+                  type="button"
+                  size="sm"
+                  @click="removeRegistrant(index)"
+                >
+                  <font-awesome-icon
+                    icon="times"
+                    size="xs"
+                    class="mr-1"
+                  />
+                  Remove
+                </b-btn>
+              </div>
+            </b-form-group>
+
+            <b-form-group>
+              <label slot="label">
+                Consent to Photo Release?
+                <font-awesome-icon
+                  v-b-popover.click="'By selecting Yes, you consent to allow photos to be taken of this registrant during the event and potentially shared on social media or in marketing materials.'"
+                  icon="info-circle"
+                  class="ml-2"
+                />
+              </label>
+              <b-form-radio-group
+                :id="`photoConsent${index}`"
+                v-model="registrants[index].photoConsent"
+              >
+                <b-form-radio value="1">Yes</b-form-radio>
+                <b-form-radio value="0">No</b-form-radio>
+              </b-form-radio-group>
+            </b-form-group>
+          </div>
 
           <b-btn
             :disabled="blockAdd"
@@ -125,7 +146,8 @@ export default {
     return {
       registrants: [
         {
-          name: ''
+          name: '',
+          photoConsent: 0
         }
       ],
       primaryContact: {
@@ -148,10 +170,19 @@ export default {
         .post('https://localhost:5001/api/registrations', {
           event: this.event,
           primaryContact: this.primaryContact,
-          registrants: this.registrants
+          registrants: this.registrants.map(registrant => {
+            return {
+              name: registrant.name,
+              photoRelease: registrant.photoConsent === '1'
+            }
+          })
         })
         .then(response => {
-          this.$emit('registered')
+          if (response.status === 201) {
+            this.$emit('registered')
+          } else {
+            e.preventDefault()
+          }
         })
         .catch(err => {
           console.log(`err: ${err}`)
@@ -161,7 +192,8 @@ export default {
 
     addRegistrant () {
       this.registrants.push({
-        name: ''
+        name: '',
+        photoConsent: 0
       })
     },
 
