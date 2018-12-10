@@ -3,7 +3,16 @@
     :items="registrations"
     :fields="fields"
     bordered
-  />
+  >
+    <template
+      slot="edit"
+      slot-scope="data"
+    >
+      <b-btn :to="`/registrations/${data.value}/edit`">
+        <font-awesome-icon icon="pencil-alt" />
+      </b-btn>
+    </template>
+  </b-table>
 </template>
 
 <script>
@@ -42,8 +51,20 @@ export default {
           key: 'photoRelease',
           label: 'Photo Release',
           formatter: (val, key, item) => (item.hasPhotoRelease ? 'Yes' : 'No')
+        },
+        {
+          key: 'edit',
+          label: '',
+          formatter: (val, key, item) => item.id
         }
       ]
+    }
+  },
+
+  methods: {
+    editRegistration (e) {
+      console.log('show')
+      this.$emit('editregistration')
     }
   }
 }
