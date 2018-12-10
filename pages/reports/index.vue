@@ -6,7 +6,7 @@
       </b-col>
     </b-row>
 
-    <b-row class="py-4">
+    <b-row class="pb-4">
       <b-col>
         <all-events-report class="h-100" />
       </b-col>

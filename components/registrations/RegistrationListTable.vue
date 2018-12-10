@@ -8,7 +8,10 @@
       slot="edit"
       slot-scope="data"
     >
-      <b-btn :to="`/registrations/${data.value}/edit`">
+      <b-btn
+        :to="`/registrations/${data.value}/edit`"
+        size="sm"
+      >
         <font-awesome-icon icon="pencil-alt" />
       </b-btn>
     </template>
