@@ -38,7 +38,11 @@ export default {
 
   methods: {
     async fetchPrimaryContacts () {
-      const primaryContacts = await axios.get(`/api/primarycontacts`)
+      const primaryContacts = await axios.get(`/api/primarycontacts`, {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.auth.accessToken}`
+        }
+      })
       this.primaryContacts = primaryContacts.data.map(contact => {
         return {
           Name: contact.name,

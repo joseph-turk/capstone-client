@@ -35,14 +35,21 @@ export default {
 
   methods: {
     async fetchEvents () {
-      const events = await axios.get('/api/events')
+      const events = await axios.get('/api/events/foruser', {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.auth.accessToken}`
+        }
+      })
       this.events = events.data.map(event => {
         return {
           Name: event.name,
           Date: moment(event.start).format('MM/DD/YYYY'),
           Capacity: event.capacity,
-          '# Registrations': event.registrations.length,
-          'Slots Available': event.capacity - event.registrations.length
+          '# Registrations': event.registrationCount,
+          'Slots Available':
+            event.capacity - event.registrationCount < 0
+              ? 0
+              : event.capacity - event.registrationCount
         }
       })
       this.loading = false

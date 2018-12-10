@@ -38,7 +38,11 @@ export default {
 
   methods: {
     async fetchRegistrants () {
-      const registrants = await axios.get(`/api/registrants`)
+      const registrants = await axios.get(`/api/registrants`, {
+        headers: {
+          Authorization: `Bearer ${this.$store.state.auth.accessToken}`
+        }
+      })
       this.registrants = registrants.data.map(registrant => {
         return {
           Name: registrant.name,
