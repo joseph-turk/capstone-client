@@ -29,19 +29,24 @@
             />
           </b-form-group>
 
-          <b-button
-            type="submit"
-            variant="primary"
-          >
-            Submit
-          </b-button>
+          <div class="mb-3">
+            <b-button
+              type="submit"
+              variant="primary"
+            >
+              Submit
+            </b-button>
 
-          <b-button
-            to="/"
-            variant="secondary"
-          >
-            Cancel
-          </b-button>
+            <b-button
+              to="/"
+              variant="secondary"
+            >
+              Cancel
+            </b-button>
+          </div>
+
+          <nuxt-link to="/login">Already have an account? Log in.</nuxt-link>
+
         </b-form>
       </b-col>
     </b-row>

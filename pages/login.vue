@@ -45,7 +45,7 @@
             </b-button>
           </div>
 
-          <nuxt-link to="/register">Register</nuxt-link>
+          <nuxt-link to="/register">Don't have an account yet? Register.</nuxt-link>
         </b-form>
       </b-col>
     </b-row>
