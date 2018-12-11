@@ -21,6 +21,12 @@
           >
             Reports
           </b-nav-item>
+          <b-nav-item
+            v-if="$store.state.auth && $store.state.user.isAdmin"
+            to="/users"
+          >
+            Users
+          </b-nav-item>
           <b-nav-item-dropdown
             v-if="$store.state.auth && $store.state.user"
             :text="$store.state.user.email"

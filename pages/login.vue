@@ -76,12 +76,14 @@ export default {
           this.$store.commit('setAuth', { accessToken: response.data.token })
           this.$store.commit('setUser', {
             email: response.data.email,
-            id: response.data.id
+            id: response.data.id,
+            isAdmin: response.data.isAdmin
           })
           Cookie.set('auth', { accessToken: response.data.token })
           Cookie.set('user', {
             email: response.data.email,
-            id: response.data.id
+            id: response.data.id,
+            isAdmin: response.data.isAdmin
           })
           this.$router.push('/')
         })
