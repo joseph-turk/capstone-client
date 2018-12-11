@@ -1,5 +1,11 @@
 <template>
-  <b-card title="All Events">
+  <b-card>
+    <div class="d-flex justify-content-between align-items-center card-title">
+      <h4 class="mb-0">{{ events ? `All Events (${events.length})` : `All Events` }}</h4>
+
+      <b-btn to="/reports/custom">Create Custom Report</b-btn>
+    </div>
+
     <div class="card-text">
       <b-table
         v-if="loading === false"

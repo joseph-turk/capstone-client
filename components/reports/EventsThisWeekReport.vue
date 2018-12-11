@@ -1,5 +1,5 @@
 <template>
-  <b-card title="Events This Week">
+  <b-card :title="events ? `Events This Week (${events.length})` : `Events This Week`">
     <div class="card-text">
       <b-table
         v-if="loading === false"

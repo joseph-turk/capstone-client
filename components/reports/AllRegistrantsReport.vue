@@ -1,7 +1,5 @@
 <template>
-  <b-card
-    title="All Registrants"
-  >
+  <b-card :title="registrants ? `All Registrants (${registrants.length})` : `All Registrants`">
     <div class="card-text">
       <b-table
         v-if="loading === false"
@@ -27,7 +25,7 @@ export default {
 
   data () {
     return {
-      registrants: [],
+      registrants: null,
       loading: true
     }
   },

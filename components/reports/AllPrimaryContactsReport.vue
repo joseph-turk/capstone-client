@@ -1,7 +1,5 @@
 <template>
-  <b-card
-    title="All Primary Contacts"
-  >
+  <b-card :title="primaryContacts ? `All Primary Contacts (${primaryContacts.length})` : `All Primary Contacts`">
     <div class="card-text">
       <b-table
         v-if="loading === false"
@@ -27,7 +25,7 @@ export default {
 
   data () {
     return {
-      primaryContacts: [],
+      primaryContacts: null,
       loading: true
     }
   },
