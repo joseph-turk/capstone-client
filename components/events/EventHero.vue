@@ -49,9 +49,9 @@ export default {
     }
   },
 
-  data () {
-    return {
-      imageSrc: `${process.env.apiUrl}/uploads/${this.imageId}/hero${
+  computed: {
+    imageSrc () {
+      return `${process.env.apiUrl}/uploads/${this.imageId}/hero${
         this.imageExtension
       }`
     }
