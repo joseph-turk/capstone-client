@@ -69,5 +69,9 @@ module.exports = {
 
   env: {
     apiUrl: process.env.BASE_URL || 'https://api.capstone-events.website'
+  },
+
+  generate: {
+    fallback: true
   }
 }
