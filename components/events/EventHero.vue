@@ -2,7 +2,7 @@
   <div
     :style="{
       'background-color': '#343a40',
-      'background-image': imageId ? `url(${process.env.apiUrl}/uploads/${imageId}/hero${imageExtension})` : '',
+      'background-image': imageId ? `url(${imageSrc})` : '',
       'background-size': 'cover',
       'background-position': 'center',
       'height': '500px',
@@ -46,6 +46,14 @@ export default {
     titleText: {
       type: String,
       required: true
+    }
+  },
+
+  data () {
+    return {
+      imageSrc: `${process.env.apiUrl}/uploads/${this.imageId}/hero${
+        this.imageExtension
+      }`
     }
   }
 }
