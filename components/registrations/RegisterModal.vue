@@ -123,7 +123,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '~/plugins/axios'
 
 export default {
   props: {
@@ -167,7 +167,7 @@ export default {
   methods: {
     submit (e) {
       axios
-        .post('https://localhost:5001/api/registrations', {
+        .post('/api/registrations', {
           event: this.event,
           primaryContact: this.primaryContact,
           registrants: this.registrants.map(registrant => {
