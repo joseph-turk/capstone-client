@@ -77,7 +77,7 @@ export default {
 
     imageSrc () {
       return this.event
-        ? `http://localhost:5000/uploads/${this.event.imageId}/thumbnail${
+        ? `${process.env.apiUrl}/uploads/${this.event.imageId}/thumbnail${
           this.event.imageExtension
         }`
         : null

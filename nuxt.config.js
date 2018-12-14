@@ -68,6 +68,6 @@ module.exports = {
   },
 
   env: {
-    apiUrl: process.env.BASE_URL
+    apiUrl: process.env.BASE_URL || 'https://api.capstone-events.website'
   }
 }
